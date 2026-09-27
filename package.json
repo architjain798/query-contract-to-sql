@@ -1,0 +1,30 @@
+{
+  "name": "query-contract",
+  "version": "0.1.0",
+  "description": "Compiles a typed query contract into SQL for DuckDB and Postgres.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "demo": "tsx src/cli.ts run",
+    "demo:postgres": "tsx src/cli.ts run --dialect postgres",
+    "sql": "tsx src/cli.ts sql",
+    "explain": "tsx src/cli.ts explain",
+    "bench": "tsx src/cli.ts bench",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc --noEmit && vitest run",
+    "golden": "UPDATE_GOLDEN=1 vitest run test/golden.test.ts"
+  },
+  "devDependencies": {
+    "@duckdb/node-api": "^1.5.5-r.5",
+    "@electric-sql/pglite": "^0.5.8",
+    "@types/node": "^26.6.3",
+    "@types/pg": "^8.23.1",
+    "pg": "^8.23.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
