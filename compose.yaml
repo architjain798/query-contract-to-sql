@@ -1,0 +1,39 @@
+# docker compose run --rm test            all tests; Postgres ones run against the postgres service
+# docker compose run --rm demo            contracts A, B and C on DuckDB
+# docker compose run --rm demo-postgres   the same on the Postgres server
+# docker compose down                     stop the Postgres server afterwards
+
+x-app: &app
+  build: .
+  image: query-contract-to-sql
+  environment:
+    POSTGRES_URL: postgres://postgres:postgres@postgres:5432/postgres
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  test:
+    <<: *app
+    command: ["npm", "test"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  demo:
+    <<: *app
+    command: ["npm", "run", "demo"]
+
+  demo-postgres:
+    <<: *app
+    command: ["npm", "run", "demo", "--", "--dialect", "postgres"]
+    depends_on:
+      postgres:
+        condition: service_healthy

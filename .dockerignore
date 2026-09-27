@@ -1,0 +1,10 @@
+# Only what the image needs.
+*
+!package.json
+!package-lock.json
+!tsconfig.json
+!semantic_model.json
+!contracts
+!data
+!src
+!test
